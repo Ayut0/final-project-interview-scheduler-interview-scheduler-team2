@@ -58,9 +58,49 @@ Any updates can be seen in real time.
   - Understand what data you need to store in the database
   - Create an ERD diagram (Use [draw.io](https://www.draw.io/) and add it to your presentation)
   - Decide what routes you need to create in the API server
+    / : get all the appointment data and display them (GET)
+    /interviewers: See the available interviewers (GET)
+    These 3 should be a realtime communication.
+    /create: book a new appointment (socket)
+    /edit/:id  : edit an existing appointment (socket)
+    /cancel/:id : delete an appointment (socket)
+    /day : Fetch data from Day table and show n the left(GET)
+
   - Understand what data you need to fetch from the API server
+    1. appointments (Appointment table) includes date
+    2. interview (Interview table)
+    3. available interviewer (Available interviewer table)
+    4. days (Day table)
+   
   - Investigate how components will communicate with each other
-  - Investigate where you should make the API calls and where you should store the data
+  - Where we need the data
+  
+    DayList component passes those state to DayListItem component
+    1. Day name form Day table
+    2. Available spots from Appointment
+       Calculate the maximum number of spots(5) - the number of Appointment confirmed
+
+    index.js(each appointment card)
+      Form: Student name, available interviewer (Interview table)
+        InterviewerList: Interviewer name and avatar. Pass those to InterviewerListItem component
+
+    Ask Arthur.
+    If the different student try to make an appointment with different interviewer, should we make it available?
+
+  - Investigate where you should make the API calls and where you should store the data(state?)
+   Where we call API
+   Form component (Interview table)
+   InterviewerList component (Available Interview table)
+   DayList component (Day table)
+
+   App.js
+   Day table
+   Appointment table
+   Interview table
+
+   Where we store the data
+   DayList component: (Appointment, day)
+   Show component: student name, interviewer name (Appointment, interview, interviewer, available interviewer table)
 
 ## Game plan
 
@@ -78,9 +118,10 @@ For the API server, you need to:
 - Create the controllers
 - Create the queries
 
-For the client, you need to:
 
+For the client, you need to:
 - Create the API requests to fetch the data from the API server
+Talk to Arthur!!!!
 - Create socket.io connection to update the data in real time
 
 ## How to split the work
