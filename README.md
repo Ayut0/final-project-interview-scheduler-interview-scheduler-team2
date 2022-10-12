@@ -44,7 +44,7 @@ Any updates can be seen in real time.
 
 ## Goals
 
-- Create ERD diagram
+- Create ERD diagram Done
 - Create a database schema using PostgreSQL
 - Build an API server with Node/Express
 - Build the communication between React app and API server over HTTP, using the JSON format
@@ -85,7 +85,7 @@ Any updates can be seen in real time.
         InterviewerList: Interviewer name and avatar. Pass those to InterviewerListItem component
 
     Ask Arthur.
-    If the different student try to make an appointment with different interviewer, should we make it available?
+    If the different student try to make an appointment with different interviewer, should we make it available? Not necessary
 
   - Investigate where you should make the API calls and where you should store the data(state?)
    Where we call API
@@ -108,8 +108,8 @@ With this information, you can present to the instructor and, if approved, you c
 
 For the database, you need to:
 
-- Create a database
-- Create the schema
+- Create a database Done
+- Create the schema for a new appointment
 - Seed the database (You can create it manually)
 
 For the API server, you need to:
@@ -136,7 +136,7 @@ Talk to Arthur!!!!
 
 - Member 2 (Hard): Schedule Feature (Can be split in 2 parts if 3 members)
 
-  - Database - Interviewers, Available Interviewers and Interviews tables
+  - Database - Interviewers, Available Interviewers and Interviews tables Done
 
   - API Server - Schedule route
 
