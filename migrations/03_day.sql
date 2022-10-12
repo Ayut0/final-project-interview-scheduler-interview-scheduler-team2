@@ -1,0 +1,4 @@
+CREATE TABLE day (
+    id SERIAL PRIMARY KEY NOT NULL,
+    time VARCHAR(10) NOT NULL
+);
