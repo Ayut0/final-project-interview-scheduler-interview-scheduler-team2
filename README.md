@@ -58,13 +58,13 @@ Any updates can be seen in real time.
   - Understand what data you need to store in the database
   - Create an ERD diagram (Use [draw.io](https://www.draw.io/) and add it to your presentation)
   - Decide what routes you need to create in the API server
-    / : get all the appointment data and display them (GET)
-    /interviewers: See the available interviewers (GET)
+    / : get all the appointment data and display them (GET): Yuto
+    /interviewers: See the available interviewers (GET): Yuto
     These 3 should be a realtime communication.
-    /create: book a new appointment (socket)
-    /edit/:id  : edit an existing appointment (socket)
-    /cancel/:id : delete an appointment (socket)
-    /day : Fetch data from Day table and show n the left(GET)
+    /create: book a new appointment (socket): Tatiana
+    /edit/:id  : edit an existing appointment (socket): Tatiana
+    /cancel/:id : delete an appointment (socket): Tatiana
+    /day : Fetch data from Day table and show n the left(GET):Tatiana
 
   - Understand what data you need to fetch from the API server
     1. appointments (Appointment table) includes date
@@ -114,7 +114,7 @@ For the database, you need to:
 
 For the API server, you need to:
 
-- Create the routes
+- Create the routes　
 - Create the controllers
 - Create the queries
 
