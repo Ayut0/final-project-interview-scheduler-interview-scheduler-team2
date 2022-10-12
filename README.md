@@ -109,8 +109,8 @@ With this information, you can present to the instructor and, if approved, you c
 For the database, you need to:
 
 - Create a database Done
-- Create the schema for a new appointment
-- Seed the database (You can create it manually)
+- Create the schema for a new appointment Done
+- Seed the database (You can create it manually) Done
 
 For the API server, you need to:
 
@@ -128,7 +128,7 @@ Talk to Arthur!!!!
 
 - Member 1 (Easy): Days Feature
 
-  - Database - Days and Appointments tables
+  - Database - Days and Appointments tables Done
   - API Server - Days route (Get all days and quantity of appointments available)
   - Client - Days component (List of days and quantity of appointments available per day)
 
