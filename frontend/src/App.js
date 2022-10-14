@@ -15,19 +15,19 @@ export default function Application() {
 
   useEffect(() =>{
     const fetchAppointments = async () =>{
-      console.log(process.env.REACT_APP_BACKEND_SCHEDULE_URL)
+      //How to change the date with state? React-router?
       try{
-        const res = await axios.get('http://localhost:8000/schedule');
+        const res = await axios.get(`/schedule/${day}`);
         const result = res.data;
         console.log(result);
-        setAppointments(result)
+        setAppointments(result);
       }catch(err){
-        console.log(err.message)
+        console.log(err.message);
       }
     }
 
     fetchAppointments();
-  }, [day])
+  }, [day]);
   function bookInterview(id, interview) {
     console.log(id, interview);
     const isEdit = appointments[id].interview;
@@ -102,6 +102,7 @@ export default function Application() {
               bookInterview(appointment.id, interview)
             }
             cancelInterview={cancelInterview}
+            value={day}
           />
         ))}
         <Appointment key="last" time="5pm" />

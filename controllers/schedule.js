@@ -23,10 +23,12 @@ const getAllTheAvailableInterviewer = async (req, res, next) =>{
     };
 };
 
+
 const getAllTheInterviewByGivenDay = async (req, res, next) =>{
+    // console.log('day', req.params);
+    const day = req.params.day;
     const pool = new Pool(dbCredentials);
 
-    //Follow the appointment json file and Reformat
     const getAvailableInterviewGivenDayQuery = (`
         SELECT appointment.id AS appointment_id, interview.id, appointment.time AS appointment_time, interview.name AS student_name, day.time AS date, interviewer.name, interviewer.avatar
         FROM appointment
@@ -36,18 +38,17 @@ const getAllTheInterviewByGivenDay = async (req, res, next) =>{
         ON day.id = appointment.day_id
         FULL JOIN interviewer
         ON interview.interviewer_id = interviewer.id
-        WHERE day.time = 'Monday'
+        WHERE day.time = '${day}'
         ORDER BY appointment.id;
-    `)
+    `);
+
     let appointmentArray = [];
     let appointmentObj;
     try{
-        console.log('query', getAvailableInterviewGivenDayQuery)
+        // console.log('query', getAvailableInterviewGivenDayQuery)
         const res = await pool.query(getAvailableInterviewGivenDayQuery)
         const result = res.rows;
-        console.log('result', result);
-        //condition needed
-        //Try For each
+
         result.forEach((appointment) =>{
             if(appointment.id !== null){
                 appointmentArray.push(
@@ -73,33 +74,7 @@ const getAllTheInterviewByGivenDay = async (req, res, next) =>{
                 )
             }
         })
-        const appointments = result.map((appointment, index) => {
-            if(appointment.id !== null){
-                appointmentArray.push(
-                    {
-                        id: appointment.appointment_id,
-                        time: appointment.appointment_time,
-                        interview: {
-                            student: appointment.student_name,
-                            interviewer:{
-                                id: appointment.interviewer_id,
-                                name: appointment.name,
-                                avatar: appointment.avatar
-                            }
-                        }
-                    }
-                )
-            }else{
-                appointmentArray.push(
-                    {
-                        id: appointment.appointment_id,
-                        time: appointment.appointment_time,
-                    }
-                )
-            }
-        }
-            );
-        // console.log('array', appointmentArray)
+
         appointmentObj = appointmentArray.reduce((obj, data) =>{
             obj[data.id] = data;
             return obj;
@@ -117,25 +92,30 @@ const getAllTheInterviewByGivenDay = async (req, res, next) =>{
 }
 
 const getAvailableInterviewersForGivenDay = async(req, res, next) =>{
+    const day = req.params.day;
     const pool = new Pool(dbCredentials);
     //Change the data in the table. Make it random.
     //Same as the interviewer array id, name, avatar. Date isn't needed.
     //Filtered by day availability
     const getAvailableInterviewersGivenDayQuery = (`
-        SELECT interviewer.name AS available_interviewer, interviewer.id AS id, interviewer.avatar AS avatar
+        SELECT interviewer.id AS id, interviewer.name AS name, interviewer.avatar AS avatar
         FROM available_interviewer
         JOIN day
         ON available_interviewer.day_id = day.id
         JOIN interviewer
         ON available_interviewer.interviewer_id = interviewer.id
-        WHERE day.time = 'Monday';
+        WHERE day.time = '${day}';
     `);
-    let availableInterviewer;
+    let interviewers = [];
     try{
-        console.log('query', getAvailableInterviewersGivenDayQuery)
-        const res = await pool.query(getAvailableInterviewersGivenDayQuery)
-        availableInterviewer = res.rows;
-        // console.log(result);
+        // console.log('query', getAvailableInterviewersGivenDayQuery)
+        const res = await pool.query(getAvailableInterviewersGivenDayQuery);
+        const result = res.rows;
+        console.log(result);
+        result.forEach(interviewer => {
+            interviewers.push(interviewer)
+        });
+        console.log( 'pushed' ,interviewers);
     }catch(err){
         console.log(err.message)
         const error = new HttpError('Could not get any available interviewers available on that day. Please try with another day.', 500);
@@ -144,9 +124,10 @@ const getAvailableInterviewersForGivenDay = async(req, res, next) =>{
         pool.end();
     };
 
-    res.json(availableInterviewer);
+    res.json(interviewers);
 };
 
 exports.getAllTheAvailableInterviewer = getAllTheAvailableInterviewer;
 exports.getAllTheInterviewByGivenDay = getAllTheInterviewByGivenDay;
-exports.getAvailableInterviewersForGivenDay = getAvailableInterviewersForGivenDay
+exports.getAvailableInterviewersForGivenDay = getAvailableInterviewersForGivenDay;
+
