@@ -2,8 +2,8 @@
 // route /day : Fetch data from Day table and show n the left(GET):Tatiana
 const express = require("express");
 const router = express.Router();
-const { showDay } = require("../controllers/days.js");
+const showDay = require("../controllers/days.js");
 
-router.get("/day", showDay);
+router.get("/", showDay.getInterviewsPerDay);
 
 module.exports = router;
