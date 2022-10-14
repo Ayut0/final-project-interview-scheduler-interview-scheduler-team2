@@ -140,9 +140,9 @@ Talk to Arthur!!!!
 
   - API Server - Schedule route
 
-    - Get all interviews for a given day
-    - Get all interviewers
-    - Get all available interviewers for a given day
+    - Get all interviews for a given day Done
+    - Get all interviewers Done
+    - Get all available interviewers for a given day Done
 
   - Client - Schedule component
 
