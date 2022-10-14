@@ -23,7 +23,6 @@ const getAllTheAvailableInterviewer = async (req, res, next) =>{
     };
 };
 
-
 const getAllTheInterviewByGivenDay = async (req, res, next) =>{
     // console.log('day', req.params);
     const day = req.params.day;
@@ -38,6 +37,7 @@ const getAllTheInterviewByGivenDay = async (req, res, next) =>{
         ON day.id = appointment.day_id
         FULL JOIN interviewer
         ON interview.interviewer_id = interviewer.id
+
         WHERE day.time = '${day}'
         ORDER BY appointment.id;
     `);
@@ -92,18 +92,23 @@ const getAllTheInterviewByGivenDay = async (req, res, next) =>{
 }
 
 const getAvailableInterviewersForGivenDay = async(req, res, next) =>{
+
     const day = req.params.day;
+
     const pool = new Pool(dbCredentials);
     //Change the data in the table. Make it random.
     //Same as the interviewer array id, name, avatar. Date isn't needed.
     //Filtered by day availability
     const getAvailableInterviewersGivenDayQuery = (`
+
         SELECT interviewer.id AS id, interviewer.name AS name, interviewer.avatar AS avatar
+
         FROM available_interviewer
         JOIN day
         ON available_interviewer.day_id = day.id
         JOIN interviewer
         ON available_interviewer.interviewer_id = interviewer.id
+
         WHERE day.time = '${day}';
     `);
     let interviewers = [];
@@ -116,6 +121,7 @@ const getAvailableInterviewersForGivenDay = async(req, res, next) =>{
             interviewers.push(interviewer)
         });
         console.log( 'pushed' ,interviewers);
+
     }catch(err){
         console.log(err.message)
         const error = new HttpError('Could not get any available interviewers available on that day. Please try with another day.', 500);
@@ -130,4 +136,3 @@ const getAvailableInterviewersForGivenDay = async(req, res, next) =>{
 exports.getAllTheAvailableInterviewer = getAllTheAvailableInterviewer;
 exports.getAllTheInterviewByGivenDay = getAllTheInterviewByGivenDay;
 exports.getAvailableInterviewersForGivenDay = getAvailableInterviewersForGivenDay;
-
