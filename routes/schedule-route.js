@@ -6,6 +6,8 @@ const router = express.Router();
 const scheduleControllers = require('../controllers/schedule')
 
 //Get all the available interviewers
-router.get('/interviewers', scheduleControllers.getAllTheAvailableInterviewer);
+router.get('/interviews', scheduleControllers.getAllTheAvailableInterviewer);
+router.get('/', scheduleControllers.getAllTheInterviewByGivenDay);
+router.get('/interviewers', scheduleControllers.getAvailableInterviewersForGivenDay)
 
 module.exports = router;
