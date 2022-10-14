@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./App.scss";
 
@@ -6,11 +6,28 @@ import DayList from "./components/DayList";
 import Appointment from "./components/Appointment";
 import daysData from "./components/__mocks__/days.json";
 import appointmentsData from "./components/__mocks__/appointments.json";
+import axios from "axios";
 
 export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState(daysData);
   const [appointments, setAppointments] = useState(appointmentsData);
+
+  useEffect(() =>{
+    const fetchAppointments = async () =>{
+      console.log(process.env.REACT_APP_BACKEND_SCHEDULE_URL)
+      try{
+        const res = await axios.get('http://localhost:8000/schedule');
+        const result = res.data;
+        console.log(result);
+        setAppointments(result)
+      }catch(err){
+        console.log(err.message)
+      }
+    }
+
+    fetchAppointments();
+  }, [day])
   function bookInterview(id, interview) {
     console.log(id, interview);
     const isEdit = appointments[id].interview;
