@@ -7,7 +7,7 @@ const scheduleControllers = require('../controllers/schedule')
 
 //Get all the available interviewers
 router.get('/interviews', scheduleControllers.getAllTheAvailableInterviewer);
-router.get('/', scheduleControllers.getAllTheInterviewByGivenDay);
-router.get('/interviewers', scheduleControllers.getAvailableInterviewersForGivenDay)
+router.get('/:day', scheduleControllers.getAllTheInterviewByGivenDay);
+router.get('/interviewers/:day', scheduleControllers.getAvailableInterviewersForGivenDay)
 
 module.exports = router;

@@ -146,7 +146,7 @@ Talk to Arthur!!!!
 
   - Client - Schedule component
 
-    - List of interviews and interviewers available per day
+    - List of interviews and interviewers available per day done
     - Update the schedule in real time in case of:
 
       - Create an interview

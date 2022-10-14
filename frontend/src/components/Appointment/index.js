@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
 import Form from "./Form";
 import Confirm from "./Confirm";
+import axios from "axios";
 
 import "./styles.scss";
 
@@ -11,6 +12,10 @@ const Appointment = (props) => {
   const [add, setAdd] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
+  const [interviewers, setInterviewers] = useState([])
+  const day = props.value;
+  console.log(day)
+
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -19,15 +24,23 @@ const Appointment = (props) => {
     setEdit(false);
     props.bookInterview(interview);
   }
-  //Seeds for Interviewer table.
-  //After that it must be removed
-  const interviewers = [
-    { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
-    { id: 2, name: "Tori Malcolm", avatar: "https://i.imgur.com/Nmx0Qxo.png" },
-    { id: 3, name: "Mildred Nazir", avatar: "https://i.imgur.com/T2WwVfS.png" },
-    { id: 4, name: "Cohana Roy", avatar: "https://i.imgur.com/FK8V841.jpg" },
-    { id: 5, name: "Sven Jones", avatar: "https://i.imgur.com/twYrpay.jpg" },
-  ];
+
+
+  useEffect(() =>{
+    const fetchAvailableInterviewer = async() => {
+      try{
+        const res = await axios.get(`schedule/interviewers/${day}`);
+        const result = res.data;
+        // console.log(result);
+        setInterviewers(result);
+      }catch(err){
+        console.log(err.message);
+      }
+    }
+
+    fetchAvailableInterviewer();
+  },[day]);
+
   return (
     <article className="appointment">
       <Header time={props.time} />
