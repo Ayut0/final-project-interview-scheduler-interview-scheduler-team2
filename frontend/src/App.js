@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import io from 'socket.io-client';
 
 import "./App.scss";
 
@@ -7,6 +8,8 @@ import Appointment from "./components/Appointment";
 //import daysData from "./components/__mocks__/days.json";
 import appointmentsData from "./components/__mocks__/appointments.json";
 import axios from "axios";
+//connection to socket
+const socket = io.connect('http://localhost:8000');
 
 export default function Application() {
   const [day, setDay] = useState("Monday");
@@ -15,10 +18,11 @@ export default function Application() {
   const [appointments, setAppointments] = useState(appointmentsData);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/day`).then((res) => {
+    axios.get(`/day`).then((res) => {
+      // console.log(res.data);
       setDays(res.data);
     });
-  }, []);
+  }, [appointments]);
 
   useEffect(() =>{
     const fetchAppointments = async () =>{
@@ -26,7 +30,7 @@ export default function Application() {
       try{
         const res = await axios.get(`/schedule/${day}`);
         const result = res.data;
-        console.log(result);
+        // console.log(result);
         setAppointments(result);
       }catch(err){
         console.log(err.message);
@@ -34,8 +38,27 @@ export default function Application() {
     }
 
     fetchAppointments();
-  }, [day]);
-  function bookInterview(id, interview) {
+  }, [day, appointments]);
+
+  async function bookInterview(id, interview) {
+    const data  = {id, interview}
+    console.log(data);
+    await socket.emit("create a new appointment", {id,interview});
+    await socket.on('create', (appointment) =>{
+      console.log('appointment', appointment);
+
+      
+    })
+    const studentName = Object.values(interview)[0];
+    console.log(studentName);
+    const interviewData = Object.values(interview)[1].id;
+    console.log(interviewData);
+    try{
+      const res = await axios.get(`/schedule/create/${id}/${interviewData}/${studentName}`);
+      console.log('res', res);
+    }catch(err){
+      console.log(err);
+    }
     console.log(id, interview);
     const isEdit = appointments[id].interview;
     setAppointments((prev) => {
@@ -63,7 +86,18 @@ export default function Application() {
       });
     }
   }
-  function cancelInterview(id) {
+
+  async function cancelInterview(id) {
+    await socket.emit("delete a appointment", {id});
+    await socket.on('delete', (data) =>{
+      console.log(data);
+    })
+    try{
+      const res = await axios.get(`/schedule/delete/${id}`);
+      console.log(res);
+    }catch(err){
+      console.log(err);
+    }
     setAppointments((prev) => {
       const updatedAppointment = {
         ...prev[id],
@@ -86,6 +120,8 @@ export default function Application() {
       };
       return days;
     });
+
+
   }
   return (
     <main className="layout">

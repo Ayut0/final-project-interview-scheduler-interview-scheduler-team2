@@ -5,11 +5,20 @@ const express = require('express');
 const router = express.Router();
 const scheduleControllers = require('../controllers/schedule')
 
-//Get all the available interviewers
+//Get the confirmed interview
 router.get('/interviews', scheduleControllers.getAllTheAvailableInterviewer);
 
+//Get the interviews based on given day
 router.get('/:day', scheduleControllers.getAllTheInterviewByGivenDay);
-router.get('/interviewers/:day', scheduleControllers.getAvailableInterviewersForGivenDay)
+//Get all the available interviewers
+router.get('/interviewers/:day', scheduleControllers.getAvailableInterviewersForGivenDay);
+
+//CRUD
+//Delete
+router.get('/delete/:id', scheduleControllers.deleteAppointment);
+
+//Create
+router.get('/create/:id/:interviewer/:student', scheduleControllers.createAppointment)
 
 
 module.exports = router;

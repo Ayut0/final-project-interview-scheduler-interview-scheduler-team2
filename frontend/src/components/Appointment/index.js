@@ -14,7 +14,6 @@ const Appointment = (props) => {
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [interviewers, setInterviewers] = useState([])
   const day = props.value;
-  console.log(day)
 
   function save(name, interviewer) {
     const interview = {
