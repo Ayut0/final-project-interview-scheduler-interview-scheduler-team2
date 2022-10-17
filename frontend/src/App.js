@@ -38,13 +38,19 @@ export default function Application() {
     }
 
     fetchAppointments();
+    socket.on('create', (appointment) =>{
+      console.log('appointment', appointment);
+      // socket.emit("create a new appointment", {appointment});
+      bookInterview(appointment.appointment, appointment.interview)
+    });
+
+    socket.on('delete', (data) =>{
+      console.log(data);
+      cancelInterview(data)
+    })
   }, [day, appointments]);
 
   async function bookInterview(id, interview) {
-    await socket.on('create', (appointment) =>{
-      console.log('appointment', appointment);
-      socket.emit("create a new appointment", {id,interview});
-    })
     const studentName = Object.values(interview)[0];
     // console.log(studentName);
     const interviewData = Object.values(interview)[1].id;
@@ -84,10 +90,6 @@ export default function Application() {
   }
 
   async function cancelInterview(id) {
-    await socket.emit("delete a appointment", {id});
-    await socket.on('delete', (data) =>{
-      console.log(data);
-    })
     try{
       const res = await axios.get(`/schedule/delete/${id}`);
       console.log(res);
@@ -137,10 +139,15 @@ export default function Application() {
           <Appointment
             key={appointment.id}
             {...appointment}
-            bookInterview={(interview) =>
+            bookInterview={(interview) =>{
               bookInterview(appointment.id, interview)
+              socket.emit("create a new appointment", {appointment:appointment.id, interview});
             }
-            cancelInterview={cancelInterview}
+            }
+            cancelInterview={()=> {
+              cancelInterview(appointment.id)
+              socket.emit('delete a appointment', appointment.id)
+            } }
             value={day}
           />
         ))}
