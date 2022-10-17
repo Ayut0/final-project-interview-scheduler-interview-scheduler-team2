@@ -120,7 +120,8 @@ const getAvailableInterviewersForGivenDay = async(req, res, next) =>{
 
     }catch(err){
         console.log(err.message)
-        const error = new HttpError('Could not get any available interviewers available on that day. Please try with another day.', 500);
+        const error = new HttpError('Could not get any available interviewers available on that day. Please try with another day.'
+        , 500);
         return next(error);
     }finally{
         pool.end();
