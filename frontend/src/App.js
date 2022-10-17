@@ -1,7 +1,6 @@
+import "./App.scss";
 import React, { useEffect, useState } from "react";
 import io from 'socket.io-client';
-
-import "./App.scss";
 
 import DayList from "./components/DayList";
 import Appointment from "./components/Appointment";
@@ -16,6 +15,7 @@ export default function Application() {
   //const [days, setDays] = useState(daysData);
   const [days, setDays] = useState([]);
   const [appointments, setAppointments] = useState(appointmentsData);
+  // const [isConnected, setIsConnected] = useState(socket.connected)
 
   useEffect(() => {
     axios.get(`/day`).then((res) => {
@@ -41,18 +41,14 @@ export default function Application() {
   }, [day, appointments]);
 
   async function bookInterview(id, interview) {
-    const data  = {id, interview}
-    console.log(data);
-    await socket.emit("create a new appointment", {id,interview});
     await socket.on('create', (appointment) =>{
       console.log('appointment', appointment);
-
-      
+      socket.emit("create a new appointment", {id,interview});
     })
     const studentName = Object.values(interview)[0];
-    console.log(studentName);
+    // console.log(studentName);
     const interviewData = Object.values(interview)[1].id;
-    console.log(interviewData);
+    // console.log(interviewData);
     try{
       const res = await axios.get(`/schedule/create/${id}/${interviewData}/${studentName}`);
       console.log('res', res);
